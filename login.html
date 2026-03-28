@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quash Pay - Login</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <div class="background-shape shape1"></div>
+  <div class="background-shape shape2"></div>
+
+  <div class="login-container">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <h1>Quash Pay</h1>
+      <p>Fast, secure and beautiful way to access your account</p>
+    </div>
+
+    <div class="welcome">
+      <h2>Welcome Back</h2>
+      <span>Login with your email address, username or phone number</span>
+    </div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="identity">Email Address / Username / Phone Number</label>
+        <div class="input-wrap">
+          <span class="icon">👤</span>
+          <input
+            type="text"
+            id="identity"
+            name="identity"
+            placeholder="Enter email, username or phone number"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <span class="icon">🔒</span>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="extra">
+        <label class="remember">
+          <input type="checkbox" id="rememberMe" />
+          Remember me
+        </label>
+        <a href="forget.html">Forgot Password?</a>
+      </div>
+
+      <button type="submit" class="login-btn" id="loginBtn">Login to Quash Pay</button>
+
+      <div id="messageBox" class="message-box"></div>
+    </form>
+
+    <div class="divider">Login supported with</div>
+
+    <div class="login-options">
+      <div class="option">Email Address</div>
+      <div class="option">Username</div>
+      <div class="option">Phone Number</div>
+    </div>
+
+    <div class="signup-text">
+      Don’t have an account?
+      <a href="signup.html">Sign up to get one for you</a>
+    </div>
+
+    <div class="footer-note">
+      © 2026 Quash Pay. Secure access made simple.
+    </div>
+  </div>
+
+  <script type="module" src="login.js"></script>
+</body>
+</html>
