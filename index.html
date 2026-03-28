@@ -33,7 +33,7 @@
     <div class="container hero-wrap">
       <div class="hero-text">
         <h4>💸 Earn daily from simple online activities</h4>
-        <h1>Watch videos, play games, read news, do tasks and earn with <span class="brand-text">Quash Pay</span></h1>
+        <h1>Watch videos, play games, read news, do tasks and earn with <span class="brand-color">Quash Pay</span></h1>
         <p>
           Quash Pay is a beautiful reward platform where users earn money for their time online.
           Get rewarded for watching videos, viewing ads, reading news, completing micro tasks,
@@ -196,7 +196,7 @@
       <div class="section-title">
         <h2>What our users are saying</h2>
         <p>
-          The first 6 testimonials stay permanent. New user testimonials from Firestore appear after them.
+          The first 6 testimonials stay fixed, while new user testimonials from Firestore are added after them.
         </p>
       </div>
 
@@ -209,13 +209,65 @@
       <div class="error-box" id="fetchErrorBox"></div>
 
       <div class="testimonials-scroll-wrapper">
-        <button class="scroll-btn left" id="scrollLeftBtn">&#10094;</button>
+        <div class="testimonials-grid" id="testimonialsGrid">
+          <div class="testimonial-card">
+            <div class="quote">“</div>
+            <p>Quash Pay really surprised me. I started with watching videos and later moved into tasks and referrals. The platform is clean and easy to use.</p>
+            <div class="user-info">
+              <h4>Favour Johnson</h4>
+              <span>Lagos, Nigeria</span>
+            </div>
+          </div>
 
-        <div class="testimonials-scroll" id="testimonialsGrid">
-          <!-- Default + Firestore testimonials -->
+          <div class="testimonial-card">
+            <div class="quote">“</div>
+            <p>I love the fact that I can earn from reading news and viewing ads during my free time. It feels smooth and beginner friendly.</p>
+            <div class="user-info">
+              <h4>Emmanuel Peters</h4>
+              <span>Abuja, Nigeria</span>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="quote">“</div>
+            <p>The referral system is one of my favorite parts. I invited some friends and I still keep earning from them without stress. Very impressive.</p>
+            <div class="user-info">
+              <h4>Mary Daniel</h4>
+              <span>Port Harcourt, Nigeria</span>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="quote">“</div>
+            <p>I joined for the games but stayed because of how many ways there are to earn. The design also looks premium and trustworthy.</p>
+            <div class="user-info">
+              <h4>Samuel Adeyemi</h4>
+              <span>Ibadan, Nigeria</span>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="quote">“</div>
+            <p>Very beautiful website. I can easily move from videos to tasks to referrals. Everything is arranged well and works in a simple way.</p>
+            <div class="user-info">
+              <h4>Queen Esther</h4>
+              <span>Benin City, Nigeria</span>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="quote">“</div>
+            <p>Support replied fast when I needed help urgently. Quash Pay made earning online look more professional and more enjoyable for me.</p>
+            <div class="user-info">
+              <h4>David Chukwu</h4>
+              <span>Owerri, Nigeria</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <button class="scroll-btn right" id="scrollRightBtn">&#10095;</button>
+      <div class="empty-state" id="emptyState">
+        No additional testimonial found yet. New user testimonials will appear after the 6 fixed ones.
       </div>
     </div>
   </section>
@@ -225,7 +277,7 @@
       <div class="section-title">
         <h2>Share your own testimonial</h2>
         <p>
-          Users can submit testimonials and they will be saved in Firestore and displayed after the first 6.
+          Users can submit testimonial and it will be stored inside Firestore <strong>testimonials</strong> collection.
         </p>
       </div>
 
@@ -237,9 +289,9 @@
             watching videos, ads, games, reading news and doing micro tasks.
           </p>
           <p>
-            This form saves data inside Firebase Firestore <strong>testimonials</strong> collection.
+            Email is collected and stored in Firestore, but it is hidden from public display on the website.
           </p>
-          <a href="login.html" class="btn btn-primary top-space">Start Earning Now</a>
+          <a href="login.html" class="btn btn-primary" style="margin-top:10px;">Start Earning Now</a>
           <p class="small-note">
             Required fields: Full Name, Email, Location and Message.
           </p>
@@ -268,7 +320,7 @@
             <textarea id="message" placeholder="Write your testimonial here..." required></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary full-width" id="submitBtn">Submit Testimonial</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn" style="width:100%;">Submit Testimonial</button>
           <div class="loading-box" id="submitLoadingBox">Submitting your testimonial...</div>
           <div class="submitted-box" id="submittedBox">✅ Thank you. Your testimonial has been submitted successfully.</div>
           <div class="error-box" id="submitErrorBox"></div>
@@ -308,4 +360,4 @@
 
   <script type="module" src="index.js"></script>
 </body>
-            </html>
+</html>
