@@ -41,51 +41,12 @@ const submitBtn = document.getElementById("submitBtn");
 
 const testimonialsGrid = document.getElementById("testimonialsGrid");
 const testimonialCount = document.getElementById("testimonialCount");
+const emptyState = document.getElementById("emptyState");
 const fetchLoadingBox = document.getElementById("fetchLoadingBox");
 const fetchErrorBox = document.getElementById("fetchErrorBox");
 const refreshTestimonialsBtn = document.getElementById("refreshTestimonialsBtn");
 
-const scrollLeftBtn = document.getElementById("scrollLeftBtn");
-const scrollRightBtn = document.getElementById("scrollRightBtn");
-
-const defaultTestimonials = [
-  {
-    name: "Favour Johnson",
-    email: "favourjohnson@example.com",
-    location: "Lagos, Nigeria",
-    message: "Quash Pay really surprised me. I started with watching videos and later moved into tasks and referrals. The platform is clean and easy to use."
-  },
-  {
-    name: "Emmanuel Peters",
-    email: "emmanuelpeters@example.com",
-    location: "Abuja, Nigeria",
-    message: "I love the fact that I can earn from reading news and viewing ads during my free time. It feels smooth and beginner friendly."
-  },
-  {
-    name: "Mary Daniel",
-    email: "marydaniel@example.com",
-    location: "Port Harcourt, Nigeria",
-    message: "The referral system is one of my favorite parts. I invited some friends and I still keep earning from them without stress. Very impressive."
-  },
-  {
-    name: "Samuel Adeyemi",
-    email: "samueladeyemi@example.com",
-    location: "Ibadan, Nigeria",
-    message: "I joined for the games but stayed because of how many ways there are to earn. The design also looks premium and trustworthy."
-  },
-  {
-    name: "Queen Esther",
-    email: "queenesther@example.com",
-    location: "Benin City, Nigeria",
-    message: "Very beautiful website. I can easily move from videos to tasks to referrals. Everything is arranged well and works in a simple way."
-  },
-  {
-    name: "David Chukwu",
-    email: "davidchukwu@example.com",
-    location: "Owerri, Nigeria",
-    message: "Support replied fast when I needed help urgently. Quash Pay made earning online look more professional and more enjoyable for me."
-  }
-];
+const fixedTestimonialsCount = 6;
 
 function escapeHtml(value) {
   const div = document.createElement("div");
@@ -111,12 +72,11 @@ function setSubmitState(isLoading) {
   submitLoadingBox.style.display = isLoading ? "block" : "none";
 }
 
-function createTestimonialCard(data, isDefault = false) {
+function createFirestoreTestimonialCard(data) {
   const card = document.createElement("div");
-  card.className = "testimonial-card";
+  card.className = "testimonial-card firestore-testimonial";
 
   const name = escapeHtml(data.name || "Anonymous User");
-  const email = escapeHtml(data.email || "No email");
   const location = escapeHtml(data.location || "Unknown Location");
   const message = escapeHtml(data.message || "");
 
@@ -124,28 +84,25 @@ function createTestimonialCard(data, isDefault = false) {
     <div class="quote">“</div>
     <p>${message}</p>
     <div class="user-info">
-      <h4>${name} ${isDefault ? '<span style="font-size:12px;color:#4338ca;">• Fixed</span>' : ""}</h4>
+      <h4>${name}</h4>
       <span>${location}</span>
-      <div class="user-email">${email}</div>
     </div>
   `;
 
   return card;
 }
 
-function renderDefaultTestimonials() {
-  defaultTestimonials.forEach((item) => {
-    const card = createTestimonialCard(item, true);
-    testimonialsGrid.appendChild(card);
-  });
+function clearFirestoreTestimonialsOnly() {
+  const oldFirestoreCards = document.querySelectorAll(".firestore-testimonial");
+  oldFirestoreCards.forEach((card) => card.remove());
 }
 
 async function loadTestimonials() {
   hideFetchMessages();
   fetchLoadingBox.style.display = "block";
-  testimonialsGrid.innerHTML = "";
+  emptyState.style.display = "none";
 
-  renderDefaultTestimonials();
+  clearFirestoreTestimonialsOnly();
 
   try {
     const testimonialsRef = collection(db, "testimonials");
@@ -154,19 +111,26 @@ async function loadTestimonials() {
 
     let firestoreCount = 0;
 
-    snapshot.forEach((docItem) => {
-      const data = docItem.data();
-      const card = createTestimonialCard(data, false);
-      testimonialsGrid.appendChild(card);
-      firestoreCount++;
-    });
+    if (!snapshot.empty) {
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const card = createFirestoreTestimonialCard(data);
+        testimonialsGrid.appendChild(card);
+        firestoreCount++;
+      });
+    }
 
-    testimonialCount.textContent = `Testimonials: ${defaultTestimonials.length + firestoreCount}`;
+    const totalCount = fixedTestimonialsCount + firestoreCount;
+    testimonialCount.textContent = `Testimonials: ${totalCount}`;
+
+    if (firestoreCount === 0) {
+      emptyState.style.display = "block";
+    }
   } catch (error) {
     console.error("Error loading testimonials:", error);
-    fetchErrorBox.textContent = "Failed to load Firestore testimonials. Please check your database rules and internet connection.";
+    fetchErrorBox.textContent = "Failed to load testimonials. Please check your Firestore rules and internet connection.";
     fetchErrorBox.style.display = "block";
-    testimonialCount.textContent = `Testimonials: ${defaultTestimonials.length}`;
+    testimonialCount.textContent = `Testimonials: ${fixedTestimonialsCount}`;
   } finally {
     fetchLoadingBox.style.display = "none";
   }
@@ -208,7 +172,7 @@ testimonialForm.addEventListener("submit", async function (e) {
     }, 5000);
   } catch (error) {
     console.error("Error submitting testimonial:", error);
-    submitErrorBox.textContent = "Unable to submit testimonial. Make sure Firestore is created and rules allow write access.";
+    submitErrorBox.textContent = "Unable to submit testimonial. Make sure Firestore database is created and rules allow write access.";
     submitErrorBox.style.display = "block";
   } finally {
     setSubmitState(false);
@@ -217,20 +181,6 @@ testimonialForm.addEventListener("submit", async function (e) {
 
 refreshTestimonialsBtn.addEventListener("click", async function () {
   await loadTestimonials();
-});
-
-scrollLeftBtn.addEventListener("click", function () {
-  testimonialsGrid.scrollBy({
-    left: -350,
-    behavior: "smooth"
-  });
-});
-
-scrollRightBtn.addEventListener("click", function () {
-  testimonialsGrid.scrollBy({
-    left: 350,
-    behavior: "smooth"
-  });
 });
 
 loadTestimonials();
